@@ -40,7 +40,8 @@ async function setData(){
   wakeUp.time = wakeUp.times[todayIndex];
 
   // let scheduleWakeUpTime = formatScheduleTime(wakeUp.time);
-  let scheduleWakeUpTime = formatScheduleTime('2:35:30');
+  let testTime = '2:35:30';
+  let scheduleWakeUpTime = formatScheduleTime(testTime);
   sendMsgTask = sendSMS(scheduleWakeUpTime);
 }
 
@@ -59,7 +60,6 @@ function formatScheduleTime(time){
   let today = moment().format('l');
   let [hour, minute] = time.split(':');
   let second = time.split(':')[2] ? time.split(':')[2] : 0;
-
   let [day, month] = today.split('/');
 
   // Time format: 'second minutes hours dayofmonth month dayofweek'
