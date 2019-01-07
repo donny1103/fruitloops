@@ -22,9 +22,7 @@ app.use(bodyParser.json());
 app.listen(PORT,()=>{console.log(`App listening on port ${PORT}!`);});
 
 app.put('/info',(req,res) => {
-  if(Object.keys(req.body) && req.body.time){
-    sendMsgTask = sendSMS(req.body.time);
-  }
+  console.log(req.body);
   res.status(200);
   res.send('handling request');
 });
