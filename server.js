@@ -43,7 +43,7 @@ async function setData(){
   wakeUp.time = wakeUp.times[todayIndex];
 
   // let scheduleWakeUpTime = formatScheduleTime(wakeUp.time);
-  let testTime = '2:35:30';
+  let testTime = '5:00';
   let scheduleWakeUpTime = formatScheduleTime(testTime);
   sendMsgTask = sendSMS(scheduleWakeUpTime);
 }
@@ -81,7 +81,7 @@ function sendSMS(time){
 
   // Define task object and return it
   const task = cron.schedule(time, () => {
-    //nexmo.message.sendSms(from, to, text);
+    nexmo.message.sendSms(from, to, text);
     console.log(`Sended sms from ${from} to ${to}: ${text}`);
   }, {
     scheduled: true,
