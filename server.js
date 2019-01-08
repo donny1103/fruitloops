@@ -12,7 +12,7 @@ const app = express();
 const bodyParser = require('body-parser');
 
 // Define global variables
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 let sendMsgTask;
 let today = moment().format('l');
 const wakeUp = {};
