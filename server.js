@@ -26,7 +26,7 @@ app.listen(port, host,()=>{console.log(`App listening on port ${port}!`);});
 app.post('/info',(req,res) => {
   console.log(req.body);
   res.status(200);
-  res.send('handling request');
+  res.send(req.body);
 });
 
 // Initialized data
