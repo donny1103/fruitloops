@@ -17,21 +17,22 @@ const host = '0.0.0.0';
 let sendMsgTask;
 let today = moment().format('l');
 const wakeUp = {};
-const timeInterval = 1; // 1hr, time interval to update data  
+const timeInterval = 4; // 1hr, time interval to update data 
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.listen(port, host,()=>{console.log(`App listening on port ${port}!`);});
 
-app.post('/info',(req,res) => {
-  console.log(req.body);
+app.post('/info',(req, res) => {
+  getSheetInfo();
   res.status(200);
-  res.send(req.body);
+  res.send('Updated server data');
 });
 
 // Initialized data
 setData();
 
+// repeatively checking date change and schedule new task, i.e. next notification task
 setInterval(updateTaskInfo, timeInterval*60*60*1000);
 
 async function setData(){
