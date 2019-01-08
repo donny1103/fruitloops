@@ -18,10 +18,11 @@ let today = moment().format('l');
 const wakeUp = {};
 const timeInterval = 1; // 1hr, time interval to update data  
 
+app.use(express.static('public'));
 app.use(bodyParser.json());
 app.listen(PORT,()=>{console.log(`App listening on port ${PORT}!`);});
 
-app.put('/info',(req,res) => {
+app.post('/info',(req,res) => {
   console.log(req.body);
   res.status(200);
   res.send('handling request');
