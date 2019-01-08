@@ -3,7 +3,7 @@
 ## Instruction
 1. `git clone` and `npm install`
 
-2. get the .env file and FruitloopsV2.json from WhatsApp group and place them under the root
+2. get the .env file under the root
 
 3. change the CALLING_NUM in the .env to your phone number
 
