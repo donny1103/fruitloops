@@ -12,7 +12,8 @@ const app = express();
 const bodyParser = require('body-parser');
 
 // Define global variables
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
+const host = '0.0.0.0';
 let sendMsgTask;
 let today = moment().format('l');
 const wakeUp = {};
@@ -20,7 +21,7 @@ const timeInterval = 1; // 1hr, time interval to update data
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
-app.listen(PORT,()=>{console.log(`App listening on port ${PORT}!`);});
+app.listen(port, host,()=>{console.log(`App listening on port ${port}!`);});
 
 app.post('/info',(req,res) => {
   console.log(req.body);
