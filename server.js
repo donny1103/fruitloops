@@ -20,7 +20,7 @@ const wakeUp = {};
 const timeInterval = 1; // 1hr, time interval to update data  
 
 app.use(express.static('public'));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.listen(port, host,()=>{console.log(`App listening on port ${port}!`);});
 
 app.post('/info',(req,res) => {
