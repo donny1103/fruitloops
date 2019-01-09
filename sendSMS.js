@@ -8,7 +8,7 @@ function sendSMS(date,time){
   console.log('Schedule Date:', date);
   console.log('Schedule Time:', time);
   let formatedTime = formatTime(date,time);
-  let text = `Wake up time is set to ${time} today`;
+  let text = `Wake up time is set to ${time} today(${date})`;
 
   // Define task object and return it
   let task = cron.schedule(formatedTime, () => {
