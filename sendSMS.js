@@ -4,13 +4,13 @@ const cron = require('node-cron');
 const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_AUTHTOKEN);
 const formatTime = require('./formatTime');
 
-function sendSMS(time){
+function sendSMS(time,date){
   console.log('Schedule Time:',time);
+  console.log('Schedule Date:',date);
+  let formatedTime = formatTime(time,date);
+  let text = `Wake up time is set to ${time} today`;
 
-  let formatedTime = formatTime(time);
-  let text = `Wake up time is set to ${time} today`
   // Define task object and return it
-
   let task = cron.schedule(formatedTime, () => {
     //nexmoSms(text);
     twilioSms(text);

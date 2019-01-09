@@ -1,6 +1,6 @@
 // Dependencies
 const dotenv = require('dotenv').config();
-const moment = require('moment');
+const moment = require('moment-timezone');
 const express = require('express');
 const bodyParser = require('body-parser');
 const sendSMS = require('./sendSMS');
@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const host = '0.0.0.0';
 
-let today = moment().format('l');
+let today = moment().tz("America/Los_Angeles").format('l');
 const wakeUp = {};
 const timeInterval = 4; // 1hr, time interval to update data 
 
@@ -19,8 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.listen(port, host,()=>{console.log(`App listening on port ${port}!`);});
 
 app.post('/info',(req, res) => {
+
   if(req.body.type === 'updateTime'){
-    console.log(req.body);
     setData();
     res.status(200);
     res.send('Received request and updated server data');
@@ -42,19 +42,18 @@ async function setData(){
   wakeUp.time = wakeUp.times[todayIndex];
   // let testTime = '7:59:10';
   if (wakeUp.time){
-    sendSMS(wakeUp.time);
+    sendSMS(today, wakeUp.time);
   } else {
     console.log('Wake up time is undefined for today');
   }
 }
 
 function updateTaskInfo(){
-  today = moment().format('l');
+  today = moment().tz("America/Los_Angeles").format('l');
   if (wakeUp.dates && wakeUp.times){
     let todayIndex = wakeUp.dates.indexOf(today);
     wakeUp.time = wakeUp.times[todayIndex];
-    let newWakeUpTime = formatScheduleTime(wakeUp.time);
-    sendSMS(newWakeUpTime);
+    sendSMS(today ,wakeUp.time);
   }
-  console.log('Updated task info');
+  console.log(`Updated task data at ${moment().tz("America/Los_Angeles").format('l, H:mm:ss')}`);
 }
