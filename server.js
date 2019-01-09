@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.listen(port, host,()=>{console.log(`App listening on port ${port}!`);});
 
 app.post('/info',(req, res) => {
-  getSheetInfo();
+  setData();
   res.status(200);
   res.send('Received request and updated server data');
 });
