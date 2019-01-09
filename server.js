@@ -53,7 +53,7 @@ function updateTaskInfo(){
   if (wakeUp.dates && wakeUp.times){
     let todayIndex = wakeUp.dates.indexOf(today);
     wakeUp.time = wakeUp.times[todayIndex];
-    sendSMS(today ,wakeUp.time);
+    sendSMS(today, wakeUp.time);
   }
   console.log(`Updated task data at ${moment().tz("America/Los_Angeles").format('l, H:mm:ss')}`);
 }
