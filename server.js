@@ -2,18 +2,18 @@
 const dotenv = require('dotenv').config();
 const GoogleSpreadsheet = require('google-spreadsheet');
 const { promisify } = require('util');
-const { SPREADSHEET_ID } = process.env;
-const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
 const moment = require('moment');
-const Nexmo = require('nexmo');
-const cron = require('node-cron');
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
-
+const sendSMS = require('./sendSMS');
+const formatTime = require('./formatTime');
+const cron = require('node-cron');
 // Define global variables
+const app = express();
 const port = process.env.PORT || 3000;
 const host = '0.0.0.0';
+const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT);
+const { SPREADSHEET_ID } = process.env;
 let sendMsgTask;
 let today = moment().format('l');
 const wakeUp = {};
@@ -26,7 +26,7 @@ app.listen(port, host,()=>{console.log(`App listening on port ${port}!`);});
 app.post('/info',(req, res) => {
   getSheetInfo();
   res.status(200);
-  res.send('Updated server data');
+  res.send('Received request and updated server data');
 });
 
 // Initialized data
@@ -42,10 +42,11 @@ async function setData(){
   let todayIndex = wakeUp.dates.indexOf(today);
   wakeUp.time = wakeUp.times[todayIndex];
 
-  // let scheduleWakeUpTime = formatScheduleTime(wakeUp.time);
-  let testTime = '5:00';
-  let scheduleWakeUpTime = formatScheduleTime(testTime);
+  let scheduleWakeUpTime = formatTime(wakeUp.time);
+  // let testTime = '7:59:10';
+  // let scheduleWakeUpTime = formatTime(testTime);
   sendMsgTask = sendSMS(scheduleWakeUpTime);
+
 }
 
 function updateTaskInfo(){
@@ -57,37 +58,6 @@ function updateTaskInfo(){
     sendMsgTask = sendSMS(newWakeUpTime);
   }
   console.log('Updated task info');
-}
-
-function formatScheduleTime(time){
-  let today = moment().format('l');
-  let [hour, minute] = time.split(':');
-  let second = time.split(':')[2] ? time.split(':')[2] : 0;
-  let [day, month] = today.split('/');
-
-  // Time format: 'second minutes hours dayofmonth month dayofweek'
-  return `${second} ${minute} ${hour} ${day} ${month} *`
-}
-
-function sendSMS(time){
-  console.log(time);
-  const nexmo = new Nexmo({
-    apiKey: process.env.NEXMO_API_KEY,
-    apiSecret: process.env.NEXMO_API_SECRET
-  })
-  const from = process.env.NEXMO_PHONE;
-  const to = process.env.CALLING_NUM;
-  const text = 'Test SMS sending from Nexmo';
-
-  // Define task object and return it
-  const task = cron.schedule(time, () => {
-    nexmo.message.sendSms(from, to, text);
-    console.log(`Sended sms from ${from} to ${to}: ${text}`);
-  }, {
-    scheduled: true,
-    timezone: "America/Los_Angeles"
-  });
-  return task;
 }
 
 async function getSheetInfo() {
